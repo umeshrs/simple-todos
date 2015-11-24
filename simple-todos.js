@@ -24,6 +24,9 @@ if (Meteor.isClient) {
 
       // Clear form input element
       event.target.text.value = "";
+    },
+    'change .hide-completed input': function (event) {
+      Session.set("hideCompleted", event.target.checked);
     }
   });
 
