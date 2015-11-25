@@ -47,7 +47,7 @@ if (Meteor.isClient) {
       });
     },
     'click .delete': function () {
-      Tasks.remove(this._id);
+      Meteor.call("deleteTask", this._id);
     }
   });
 
@@ -68,5 +68,8 @@ Meteor.methods({
       owner: Meteor.userId(),
       username: Meteor.user().username
     });
+  },
+  deleteTask: function (taskId) {
+    Tasks.remove(taskId);
   }
 });
