@@ -29,12 +29,7 @@ if (Meteor.isClient) {
       var text = event.target.text.value;
 
       // Insert new task into the collection
-      Tasks.insert({
-        text: text,
-        createdAt: new Date(),            // current time,
-        owner: Meteor.userId(),           // _id of logged in user
-        username: Meteor.user().username  // username of logged in user
-      });
+      Meteor.call("addTask", text);
 
       // Clear form input element
       event.target.text.value = "";
@@ -60,3 +55,18 @@ if (Meteor.isClient) {
     passwordSignupFields: "USERNAME_ONLY"
   });
 }
+
+Meteor.methods({
+  addTask: function (text) {
+    if (! Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
+
+    Tasks.insert({
+      text: text,
+      createdAt: new Date(),
+      owner: Meteor.userId(),
+      username: Meteor.user().username
+    });
+  }
+});
