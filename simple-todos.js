@@ -92,6 +92,13 @@ Meteor.methods({
     });
   },
   deleteTask: function (taskId) {
+    var task = Tasks.findOne(taskId);
+
+    // If task is private, make sure only the owner can delete it
+    if (task.private && task.owner !== Meteor.userId()) {
+      throw new Meteor.Error("not-authorized");
+    }
+
     Tasks.remove(taskId);
   },
   setChecked: function (taskId, checkedStatus) {
